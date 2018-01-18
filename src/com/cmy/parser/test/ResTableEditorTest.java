@@ -18,16 +18,17 @@ public class ResTableEditorTest {
     public static void main(String[] args) throws Exception {
         String path = "/Users/vector/Desktop/test/resources.arsc";
         ResTableEditor resTableEditor = new ResTableEditor(path);
-        resTableEditor.modifyPackageId(0x66);
-        Map<Integer, String> map = new HashMap<>();
-        map.put(0x55, "com.cmy.plugin.module2");
-        map.put(0x56, "com.cmy.plugin.module3");
-        map.put(0x57, "com.cmy.plugin.module4");
-        resTableEditor.modifyLibraryChunk(map);
+//        resTableEditor.modifyPackageId(0x66);
+//        Map<Integer, String> map = new HashMap<>();
+//        map.put(0x55, "com.cmy.plugin.module2");
+//        map.put(0x56, "com.cmy.plugin.module3");
+//        map.put(0x57, "com.cmy.plugin.module4");
+//        resTableEditor.modifyLibraryChunk(map);
+        resTableEditor.modifyResources(resTableEditor.resTable.resTablePackage, 0x7f);
         resTableEditor.write();
 
-        ArscReader reader = new ArscReader(new File(path));
-        print(reader.read());
+//        ArscReader reader = new ArscReader(new File(path));
+//        print(reader.read());
     }
 
     private static void print(ResTable resTable) {

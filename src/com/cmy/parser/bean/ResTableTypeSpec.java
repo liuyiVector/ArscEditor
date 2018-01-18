@@ -21,4 +21,8 @@ public class ResTableTypeSpec extends ResTableChunk {
      */
     public byte[] data;
 
+
+    //资源spec数组，但是不太清楚这个是拿来干什么的
+    public int[] resSpec;
+
 }

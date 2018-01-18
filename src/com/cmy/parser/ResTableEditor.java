@@ -1,12 +1,14 @@
 package com.cmy.parser;
 
 import com.cmy.parser.bean.*;
+import com.cmy.parser.bean.tabletype.ResTableEntry;
 import com.cmy.parser.bean.tabletype.ResTableMapEntry;
 import com.cmy.parser.bean.tabletype.ResTableType;
 import com.cmy.parser.utils.ArscUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,7 +17,8 @@ import java.util.Set;
  */
 public class ResTableEditor {
 
-    private ResTable resTable;
+
+    public ResTable resTable;
     private File file;
 
     public ResTableEditor(String path) throws Exception {
@@ -27,9 +30,64 @@ public class ResTableEditor {
         this.resTable = new ArscReader(file).read();
     }
 
+    //modify some resources
+    public void modifyResources(ResTablePackage resTablePackage, int packageID) {
+
+        resTablePackage.resTableChunkList.forEach(resTableChunk -> {
+            if (resTableChunk instanceof ResTableType) {
+                ResTableType resTableType = (ResTableType) resTableChunk;
+                byte typeID = resTableType.typeId;
+                if(typeID == 02) {
+
+                    int[] entryoffsets = resTableType.resTableEntryOffsets;
+                    List<ResTableEntry> entryList = resTableType.resTableEntryList;
+                    int[] targets = new int[]{0x54, 0x55};
+
+
+//                    int index = -1;
+//                    for(int i = 0; i < entryoffsets.length; i++){
+//                        if(entryoffsets[i] != 0xffffffff){
+//                            index++;
+//                            if(i == targets[0] || i == targets[1]){
+//                                System.out.println(new String(resTablePackage.keyStringPool.strings[entryList.get(index).index]));
+//                                entryList.get(index).flags = 0x0004;
+//                            }
+//                        }
+//                    }
+
+                    for(int i = 0; i < targets.length; i++){
+                        entryoffsets[targets[i]] = 0xffffffff;
+                    }
+
+
+//                    for(int i = 0; i < entryList.size(); i++){
+//                        ResTableEntry resTableEntry = entryList.get(i);
+//                        //if xx 对于要删除的资源，对应的offset设置成0xFFFFFFFF
+//                        int index = resTableEntry.index;
+//                        String typeName = new String(resTablePackage.typeStringPool.strings[resTableType.typeId-1]);
+//                        String keyName = new String(resTablePackage.keyStringPool.strings[index]);
+//                        if(keyName.contains("ic_share_qq") || keyName.contains("ic_share_sina")){
+//                            System.out.println(String.format("%04x", packageID) +" " + String.format("%04x", typeID) + " " + typeName + " " + String.format("%04x", index) + " " +  String.format("%04x", i));
+//                        }
+//                        int nowID = (packageID << 24) | (typeID <<16) | i;
+//                        if(nowID == 0x7f020054 || nowID == 0x7f020055) {
+//                            System.out.println("=======liuyi: find the target resource====");
+//                            //resTableType.resTableEntryOffsets[i] = 0xffff;
+//                        }
+//                    }
+
+                }
+            }
+        });
+    }
+
+    //修改pp字段
     public void modifyPackageId(int pp) {
         ResTablePackage resTablePackage = resTable.resTablePackage;
         resTablePackage.packageHeader.packageId = pp;
+
+        //保存一下资源项名称字符串
+
         resTablePackage.resTableChunkList.forEach(resTableChunk -> {
             if (resTableChunk instanceof ResTableType) {
                 ResTableType resTableType = (ResTableType) resTableChunk;
@@ -49,6 +107,7 @@ public class ResTableEditor {
         });
     }
 
+    //修改library块
     public void modifyLibraryChunk(Map<Integer, String> ppMap) {
         int originalLibraryChunkSize = 0;
         ResTableChunk resTableChunk = resTable.resTablePackage.resTableChunkList.get(0);

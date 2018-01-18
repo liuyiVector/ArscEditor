@@ -100,14 +100,19 @@ public class ResTablePrinter {
 
     private void println(int pp, ResStringPool globalStringPool, ResStringPool keyStringPool, ResTableType resTableType) {
         List<ResTableEntry> list = resTableType.resTableEntryList;
-        for (int i = 0; i < list.size(); i++) {
+        System.out.println("资源项目组数:" + resTableType.typeId + " " + resTableType.entryCount + " " + resTableType.resTableEntryOffsets.length);
+        int len = list.size();
+        //len = 0;
+        for (int i = 0; i < len; i++) {
             ResTableEntry entry = list.get(i);
 
 //            if (entry.flags == 0 || entry.flags == 1) {
 //                continue;
 //            }
 
-            System.out.println("打印flags:" + entry.flags);
+            //System.out.println("打印flags:" + entry.flags);
+            if((entry.flags & ResTableEntry.FLAG_WEAK) == 0)
+                continue;
 
             if ((entry.flags & ResTableEntry.FLAG_COMPLEX) == 0) {
                 println("------------------------------------------");

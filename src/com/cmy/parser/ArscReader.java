@@ -23,7 +23,7 @@ public class ArscReader extends ArscEditor {
         ResTable resTable = new ResTable();
         resTable.resTableHeader = readResTableHeader();
         resTable.globalResStringPool = readResStringPool();
-        System.out.println("curPos:" + getCurPos());
+        //System.out.println("curPos:" + getCurPos());
         resTable.resTablePackage = readResTablePackage(resTable.resTableHeader.resChunkHeader.size);
         return resTable;
     }
@@ -128,7 +128,7 @@ public class ArscReader extends ArscEditor {
                 //System.out.println("RES_TABLE_TYPE_SPEC_TYPE");
                 list.add(readResTableTypeSpec(resChunkHeader));
             } else if (type == ResTable.RES_TABLE_TYPE_TYPE) {
-                //System.out.println("RES_TABLE_TYPE_TYPE");
+                System.out.println("RES_TABLE_TYPE_TYPE: " + startPos);
                 list.add(readResTableType(startPos, resChunkHeader));
             } else {
                 throw new IOException("read package error");

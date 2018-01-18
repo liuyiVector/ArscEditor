@@ -1,6 +1,7 @@
 package com.cmy.parser.test;
 
 import com.cmy.parser.ArscReader;
+import com.cmy.parser.ArscWriter;
 import com.cmy.parser.ResTablePrinter;
 import com.cmy.parser.bean.ResTable;
 import com.cmy.parser.bean.ResTableChunk;
@@ -21,21 +22,23 @@ public class Main {
         ResTable resTable = arscReader.read();
         print(resTable);
 
-        ResTableChunk resTableChunk = resTable.resTablePackage.resTableChunkList.get(0);
-        if (resTableChunk instanceof ResTableLibrary) {
-            System.out.println("=======res table library=====");
-            ResTableLibrary resTableLibrary = (ResTableLibrary) resTableChunk;
-            resTableLibrary.resTableLibraryEntries.forEach(resTableLibraryEntry -> System.out.println(resTableLibraryEntry.packageId + " " + new String(resTableLibraryEntry.packageName)));
-        }
-
-        String path1 = "/Users/vector/Desktop/test/resources1.arsc";
-        File file1 = new File(path1);
-        if (file1.exists()) {
-            file1.delete();
-        }
-        file1.createNewFile();
+//        ResTableChunk resTableChunk = resTable.resTablePackage.resTableChunkList.get(0);
+//        if (resTableChunk instanceof ResTableLibrary) {
+//            System.out.println("=======res table library=====");
+//            ResTableLibrary resTableLibrary = (ResTableLibrary) resTableChunk;
+//            resTableLibrary.resTableLibraryEntries.forEach(resTableLibraryEntry -> System.out.println(resTableLibraryEntry.packageId + " " + new String(resTableLibraryEntry.packageName)));
+//        }
 
 
+
+//        String path1 = "/Users/vector/Desktop/test/resources1.arsc";
+//        File file1 = new File(path1);
+//        if (file1.exists()) {
+//            file1.delete();
+//        }
+//        file1.createNewFile();
+//
+//
 //        ArscWriter arscWriter = new ArscWriter(file1);
 //        arscWriter.write(resTable);
 //
@@ -50,7 +53,7 @@ public class Main {
         ResTablePrinter printer = new ResTablePrinter(resTable);
         printer.printResTableHeader();
         printer.printGlobalResStringPool();
-        printer.printResTablePackage(false);
+        printer.printResTablePackage(true);
         System.out.println("==print res table end===");
 
     }
